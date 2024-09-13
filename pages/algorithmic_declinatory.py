@@ -98,10 +98,9 @@ table = decline_df[decline_df.identificador==well][['tramo', 'identificador', 'e
 st.plotly_chart(fig)
 st.dataframe(table, hide_index=True, use_container_width=True)
 
-# left, right = st.columns([5, 1])
-left, mid, right = st.columns(3, vertical_alignment="bottom")
-
 st.write("_____________________")
+
+left, mid, right = st.columns(3, vertical_alignment="bottom")
 
 np_df = np_dec_comparison[np_dec_comparison['identificador'] == well]
 fig2 = go.Figure()
@@ -131,7 +130,7 @@ fig2.update_layout(
     xaxis_title='Identificador',
     template='plotly_white',
     bargap=.4, 
-    margin=dict(l=10, r=0, b=150),
+    # margin=dict(l=10, r=0, b=150),
     legend=dict(
             orientation="h",
             yanchor="bottom",
