@@ -94,7 +94,7 @@ def create_plot(identificador, capa, evento, start_year, end_year, estimacion_np
     fig.update_xaxes(title="Np Real [mm3]", range=[0, maxnp1], row=1, col=1)
     fig.update_yaxes(title="NpH Declinatory Estimation [mm3]", range=[0, maxnp1], row=1, col=1)
     
-    fig.update_xaxes(title="Hk [m]", row=1, col=2)
+    fig.update_xaxes(title="H Punzado [m]", row=1, col=2)
     if log:
         fig.update_yaxes(title=f"{estimacion_np} [mm3]", type="log", row=1, col=2)
     else:
@@ -119,7 +119,7 @@ with col1:
     capa = st.multiselect('Capa:', options=capa_options, default=["all"])
     start_year, end_year = st.slider('Year Range:', min_value=min_year, max_value=max_year, value=(min_year, max_year))
 with col2:
-    xaxes_feature = st.selectbox('Feature (x):', options=["Hk"], index=0)
+    xaxes_feature = st.selectbox('Feature (x):', options=["Hpunzado"], index=0)
     estimacion_np = st.selectbox('Estimador Np (y):', options=["NpEvent", "NpH", "NpFC"], index=0)
     log = st.checkbox('Log y', value = False)
     trendline = st.checkbox('Trendline', value = True)
