@@ -130,7 +130,7 @@ fig2.update_layout(
     xaxis_title='Identificador',
     template='plotly_white',
     bargap=.4, 
-    # margin=dict(l=10, r=0, b=150),
+    margin=dict(l=0, r=0, t=1, b=150),
     legend=dict(
             orientation="h",
             yanchor="bottom",
