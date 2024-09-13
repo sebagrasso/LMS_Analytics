@@ -21,6 +21,7 @@ def hyperbolic_decline(t, qi, di, b):
 
 df = pd.read_parquet('files/prod_oil_field_todecline')
 decline_df = load_pickle("files/decline_df")
+np_dec_comparison = pd.read_parquet('files/np_dec_comparison')
 
 st.header("Algorithmic Declinarory")
 st.write("_____________________")
@@ -96,3 +97,51 @@ table = decline_df[decline_df.identificador==well][['tramo', 'identificador', 'e
 
 st.plotly_chart(fig)
 st.dataframe(table, hide_index=True, use_container_width=True)
+
+# left, right = st.columns([5, 1])
+left, mid, right = st.columns(3, vertical_alignment="bottom")
+
+st.write("_____________________")
+
+np_df = np_dec_comparison[np_dec_comparison['identificador'] == well]
+fig2 = go.Figure()
+fig2.add_trace(go.Bar(
+    x=np_df['identificador'],
+    y=np_df['np_[mm3]'],
+    name='np_[mm3]',
+    orientation='v',
+    marker=dict(color='green')))
+fig2.add_trace(go.Bar(
+    x=np_df['identificador'],
+    y=np_df['NpH'],
+    name='NpH',
+    orientation='v',
+    marker=dict(color='salmon')))
+fig2.add_trace(go.Bar(
+    x=np_df['identificador'],
+    y=np_df['NpFC'],
+    name='NpFC',
+    orientation='v',
+    marker=dict(color='lightblue')))
+fig2.update_layout(
+    barmode='group', 
+    # height=600,
+    # title='Comparación de Np Real Yacimiento y NpH estimado por declinatoria',
+    yaxis_title='Valor',
+    xaxis_title='Identificador',
+    template='plotly_white',
+    bargap=.4, 
+    margin=dict(l=10, r=0, b=150),
+    legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.001,
+            xanchor="center",
+            x=0.5,
+            font=dict(
+                size=12,
+                color="black"
+            )
+        ),
+)
+mid.plotly_chart(fig2, use_container_width=True)
