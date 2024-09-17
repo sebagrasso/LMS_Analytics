@@ -8,14 +8,18 @@ from scipy import stats
 import os
 
 # @st.cache_data
-h_punzado_tramo_id = pd.read_parquet('files/h_punzado_tramo_id')
+pozo_capa_tramo_id = pd.read_parquet('files/pozo_capa_tramo_id')
 np_dec_comparison = pd.read_parquet('files/np_dec_comparison')
 
 st.header("Np-EUR Estimation vs Reservoir Properties")
 st.write("_____________________")
 
 def create_plot(identificador, capa, evento, start_year, end_year, estimacion_np, xaxes_feature, log, trendline):
-    filtered_data = h_punzado_tramo_id.copy()
+    identificador = list(identificador)
+    capa = list(capa)
+    evento = list(evento)
+    filtered_data = pozo_capa_tramo_id.dropna(subset=xaxes_feature)[pozo_capa_tramo_id[xaxes_feature]!=0].copy()
+    
     if identificador != ["all"]:
         filtered_data = filtered_data[filtered_data['identificador'].isin(identificador)]
     if capa != ["all"]:
@@ -94,7 +98,7 @@ def create_plot(identificador, capa, evento, start_year, end_year, estimacion_np
     fig.update_xaxes(title="Np Real [mm3]", range=[0, maxnp1], row=1, col=1)
     fig.update_yaxes(title="NpH Declinatory Estimation [mm3]", range=[0, maxnp1], row=1, col=1)
     
-    fig.update_xaxes(title="H Punzado [m]", row=1, col=2)
+    fig.update_xaxes(title=f"{xaxes_feature}", row=1, col=2)
     if log:
         fig.update_yaxes(title=f"{estimacion_np} [mm3]", type="log", row=1, col=2)
     else:
@@ -107,19 +111,19 @@ def create_plot(identificador, capa, evento, start_year, end_year, estimacion_np
 
 # def main():
 # st.title('Data Visualization Dashboard')
-identificador_options = ["all"] + sorted(h_punzado_tramo_id['identificador'].unique().tolist())
-evento_options = ["all"] + sorted(h_punzado_tramo_id['evento'].unique().tolist())
-min_year = int(h_punzado_tramo_id['year'].min())
-max_year = int(h_punzado_tramo_id['year'].max())
+identificador_options = ["all"] + sorted(pozo_capa_tramo_id['identificador'].unique().tolist())
+evento_options = ["all"] + sorted(pozo_capa_tramo_id['evento'].unique().tolist())
+min_year = int(pozo_capa_tramo_id['year'].min())
+max_year = int(pozo_capa_tramo_id['year'].max())
 col1, col2 = st.columns(2)
 with col1:
     identificador = st.multiselect('Well:', options=identificador_options, default=["all"])
-    capa_options = ["all"] + sorted(list(set(capa.strip() for capas in h_punzado_tramo_id['capa'].unique() for capa in capas.split(','))))
+    capa_options = ["all"] + sorted(list(set(capa.strip() for capas in pozo_capa_tramo_id['capa'].unique() for capa in capas.split(','))))
     evento = st.multiselect('Evento:', options=evento_options, default=["all"])
     capa = st.multiselect('Capa:', options=capa_options, default=["all"])
     start_year, end_year = st.slider('Year Range:', min_value=min_year, max_value=max_year, value=(min_year, max_year))
 with col2:
-    xaxes_feature = st.selectbox('Feature (x):', options=["Hpunzado"], index=0)
+    xaxes_feature = st.selectbox('Feature (x):', options=['espesor_permeable_[m]', 'espesor_total_[m]', 'np_[mm3]', 'Hpunzado', 'oip', 'pws', 'pws_index', 'so', 'poro'], index=0)
     estimacion_np = st.selectbox('Estimador Np (y):', options=["NpEvent", "NpH", "NpFC"], index=0)
     log = st.checkbox('Log y', value = False)
     trendline = st.checkbox('Trendline', value = True)
@@ -148,8 +152,8 @@ fig2.add_trace(go.Bar(
     marker=dict(color='salmon')))
 fig2.add_trace(go.Bar(
     x=np_dec_comparison['identificador'],
-    y=np_dec_comparison['NpFC'],
-    name='NpFC',
+    y=np_dec_comparison['NpEvent'],
+    name='NpEvent',
     orientation='v',
     marker=dict(color='lightblue')))
 fig2.update_layout(

@@ -118,8 +118,8 @@ fig2.add_trace(go.Bar(
     marker=dict(color='salmon')))
 fig2.add_trace(go.Bar(
     x=np_df['identificador'],
-    y=np_df['NpFC'],
-    name='NpFC',
+    y=np_df['NpEvent'],
+    name='NpEvent',
     orientation='v',
     marker=dict(color='lightblue')))
 fig2.update_layout(
