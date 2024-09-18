@@ -102,5 +102,5 @@ def plot_logs_dists(df, list_logs):
 fig2 = plot_logs_dists(wells_df_global_logs_rmn_filt[wells_df_global_logs_rmn_filt.identificador==identificador], logs)
 st.plotly_chart(fig2, use_container_width=True)
 
-st.header("Logs Distributions")
+st.subheader("Logs Distributions")
 st.write("_____________________")
