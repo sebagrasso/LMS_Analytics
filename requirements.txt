@@ -3,4 +3,3 @@ numpy
 seaborn
 plotly.express
 scipy
-random
