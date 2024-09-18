@@ -21,6 +21,7 @@ wells_history = st.Page("pages/wells_history.py", title="Wells History", icon=":
 location_map = st.Page("pages/location_map.py", title="2D Location Map", icon=":material/map:") ## OK 06-09
 
 nulls_analysis = st.Page("pages/nulls_analysis.py", title='Nulls Analysis', icon=":material/travel_explore:") ## OK 06-09
+curve_plot = st.Page("pages/curve_plot.py", title='Logs Plot', icon=":material/line_curve:") ## OK 18-09
 
 fluidos_xplots = st.Page("pages/fluidos_xplots.py", title='Fluids Xplots', icon=":material/close:") ## OK 06-09
 submergence_liquid = st.Page("pages/submergence_liquid.py", title='Submergence vs Liquid', icon=":material/waves:") ## OK 06-09
@@ -39,7 +40,7 @@ npevent_nph_npfc_vs_np_hk_io = st.Page("pages/npevent_nph_npfc_vs_np_hk_io.py", 
 pg = st.navigation(
     {
         "Field Overview": [wells_history, location_map],
-        "Logs": [nulls_analysis],
+        "Logs": [nulls_analysis, curve_plot],
         "Controls vs Production": [fluidos_xplots, submergence_liquid],
         "Layers": [allocation_production, layers_props],
         "Atemporal Data": [atemporal_db],
